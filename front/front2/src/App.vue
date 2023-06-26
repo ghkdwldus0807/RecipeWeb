@@ -1,16 +1,16 @@
 <template>
-  <PageHeader/> 
-  <router-view/>  
+  <PageHeader/>
+  <router-view/>
 </template>
 
 <script>
-import PageHeader from './components/PageHeader'
-
+import PageHeader from '@/components/PageHeader'
 
 export default {
   name: 'App',
   components: {
     PageHeader
+  }
 }
 </script>
 
@@ -25,14 +25,15 @@ export default {
 
 #nav {
   padding: 30px;
+  background-color: #d9d9d9;
 }
 
 #nav a {
+  font-size: 50px;
   font-weight: bold;
-  color: #2c3e50;
-}
+  text-decoration:none; color:#333;}
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+
+
+
 </style>

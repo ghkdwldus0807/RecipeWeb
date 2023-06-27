@@ -9,6 +9,7 @@ const router = createRouter({
         // path별 component를 추가한다.
     { path : "/home", name : "Home", component : Home },
     { path : "/board", name : "Board", component : Board},
+    // { path : "/board", name : "Board", component : Board, query: { page: 1 , size: 4}},
     { path : "/postdetail", name : "PostDetail", component : PostDetail},
     ]
 });

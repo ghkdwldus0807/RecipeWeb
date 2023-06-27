@@ -1,5 +1,5 @@
 <template>
-    <div>Post</div>
+    <h1>postDetail</h1>
 </template>
 <script>
 export default {

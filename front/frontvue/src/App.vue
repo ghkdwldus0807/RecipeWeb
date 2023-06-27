@@ -1,19 +1,24 @@
 <template>
   <div id="app">
+    <div id="header">
+      <pageHeader/>
+    </div>
     <div id="content">
       <router-view></router-view>
     </div>
   </div>
 </template>
 
-<script> 
+<script>
+import PageHeader from './components/PageHeader';
 import Board from './views/Board.vue';
 
 export default {
-  name: 'App        ',
+  name: 'App',
   components: {
-    Board,
-  }
+    PageHeader,
+    Board
+}
 }
 </script>
 

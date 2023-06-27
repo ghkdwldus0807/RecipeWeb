@@ -1,6 +1,5 @@
 <template>
     <div id="wrap">
-        <Header />
         <section id="Wrap">
             <div>
             <span>레시피게시판</span> <span>레시피 추가</span> <span>제목검색</span>
@@ -20,13 +19,19 @@
 </template>
 <script>
 import axios from 'axios';
-// import PostPreview from '../components/PostPreview.vue';
-import Header from '../components/Header.vue'
+// import Header from '../components/Header.vue'
+import PageHeader from '../components/PageHeader.vue'
 
 export default {
     name: 'Board',
-    components: {
-        Header
+    created() {
+        axios
+            .get("https://3a013dbf-8781-4e7d-b750-8003b8519f89.mock.pstmn.io/api/recipes")
+            .then(res => {
+                this.recipePost = res.data
+                console.log(res)
+            })
+            .catch(err => console.log(err))
     },
     data() {
         return {

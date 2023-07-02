@@ -2,15 +2,35 @@ const Recipe = require("C:/Users/ybbso/OneDrive/바탕 화면/RecipeWeb/db/datab
 //여기다 데이터베이스 링크 연결
 
 const getAllRecipes = (req, res) => {
-  const query = "SELECT * FROM posts ORDER BY date DESC";
+  const page = parseInt(req.query.page) || 1; // 요청에서 페이지 번호를 가져옴 기본값 1
+  const pageSize = parseInt(req.query.pageSize) || 4; // 요청에서 페이지 크기 가져옴 기본값 4
+  const offset = (page - 1) * pageSize;
+
+  const query = `SELECT * FROM posts ORDER BY date DESC LIMIT ${pageSize} OFFSET ${offset}`;
 
   connection.query(query, (err, results) => {
     if (err) {
       res.status(400).send({ error: err.message });
     } else {
-      res.json({
-        articles: results,
-      });
+      connection.query(
+        "SELECT COUNT(*) as totalCount FROM posts",
+        (err, countResult) => {
+          if (err) {
+            res.status(400).send({ error: err.message });
+          } else {
+            const totalCount = countResult[0].totalCount;
+            const totalPages = Math.ceil(totalCount / pageSize);
+
+            res.json({
+              _post_list: results,
+              page: page,
+              size: pageSize,
+              totalPage: totalPages,
+              totalCount: totalCount,
+            });
+          }
+        }
+      );
     }
   });
 };
@@ -20,7 +40,10 @@ const getDetail = (req, res) => {
     params: { _post_id },
   } = req;
 
-  const query = "SELECT * FROM posts WHERE post_id = ?";
+  const query = `SELECT posts.*, tags.tag_name
+                 FROM posts
+                 JOIN tags ON posts.tag_id = tags.tag_id
+                 WHERE posts.post_id = ?`;
 
   connection.query(query, [_post_id], (err, results) => {
     if (err) {
@@ -29,7 +52,10 @@ const getDetail = (req, res) => {
       if (results.length === 0) {
         res.status(404).send({ error: "Recipe not found" });
       } else {
-        res.status(200).render("detail", { post: results[0] });
+        res.status(200).render("detail", {
+          post: results[0],
+          tag_name: results[0].tag_name,
+        });
       }
     }
   });
